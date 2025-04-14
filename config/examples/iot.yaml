@@ -1,0 +1,267 @@
+# Configuration GhostNet pour Environnement IoT
+# Optimisé pour dispositifs connectés et réseaux de capteurs
+
+general:
+  name: "GhostNet IoT"
+  version: "1.0.0"
+  log_level: "INFO"
+  log_dir: "logs/"
+  api_port: 8080
+  api_host: "0.0.0.0"
+  enable_ssl: true
+  ssl_cert: "config/certs/server.crt"
+  ssl_key: "config/certs/server.key"
+  # Optimisations pour déploiement sur hardware limité
+  reduced_cpu_usage: true
+  memory_limit: "512MB"
+  lightweight_mode: true
+
+detection:
+  enabled: true
+  modes:
+    - signature
+    - behavioral
+  sensitivity: 0.9  # Plus sensible pour les attaques IoT
+  sampling_rate: 10
+  alert_threshold: 0.6
+  max_false_positives: 15
+  learning_period: 259200  # 3 jours en secondes
+  
+  signature_rules:
+    - name: "Mirai Botnet Scan"
+      pattern: "User-Agent: .*Wget.*"
+      count: 1
+      timeframe: 60
+      severity: "high"
+      action: "redirect_to_lure"
+      
+    - name: "Default Credential Login"
+      pattern: "Login attempt with default credentials"
+      count: 1
+      timeframe: 30
+      severity: "critical"
+      action: "redirect_to_lure"
+      
+    - name: "IoT Command Injection"
+      pattern: ";(cat|wget|curl|tftp|busybox) .*"
+      count: 1
+      timeframe: 10
+      severity: "critical"
+      action: "redirect_to_lure"
+      
+    - name: "MQTT Unauthorized Access"
+      pattern: "CONNECT packet received from unauthorized client"
+      count: 1
+      timeframe: 10
+      severity: "high"
+      action: "redirect_to_lure"
+
+lure_generator:
+  enabled: true
+  auto_update: true
+  update_interval: 86400  # 24 heures
+  mimicry_level: "high"
+  resource_limit: 0.3
+  
+  templates:
+    - name: "smart_camera"
+      os: "linux_embedded"
+      version: "3.0"
+      services:
+        - name: "rtsp"
+          port: 554
+          enabled: true
+        - name: "http"
+          port: 80
+          enabled: true
+          content_path: "templates/iot/camera"
+          credentials:
+            - username: "admin"
+              password: "admin"
+        - name: "telnet"
+          port: 23
+          enabled: true
+          credentials:
+            - username: "root"
+              password: "admin"
+            
+    - name: "smart_router"
+      os: "busybox"
+      version: "1.31"
+      services:
+        - name: "http"
+          port: 80
+          enabled: true
+          content_path: "templates/iot/router"
+          credentials:
+            - username: "admin"
+              password: "admin"
+        - name: "ssh"
+          port: 22
+          enabled: true
+          credentials:
+            - username: "admin"
+              password: "admin"
+        - name: "telnet"
+          port: 23
+          enabled: true
+              
+    - name: "smart_thermostat"
+      os: "rtos"
+      version: "2.2"
+      services:
+        - name: "http"
+          port: 80
+          enabled: true
+          content_path: "templates/iot/thermostat"
+        - name: "mqtt"
+          port: 1883
+          enabled: true
+          
+    - name: "industrial_plc"
+      os: "vxworks"
+      version: "6.9"
+      services:
+        - name: "modbus"
+          port: 502
+          enabled: true
+        - name: "http"
+          port: 80
+          enabled: true
+          content_path: "templates/iot/plc"
+
+network_manager:
+  interfaces:
+    - name: "eth0"
+      role: "management"
+      ip: "auto"
+    - name: "eth1"
+      role: "honeypot"
+      ip: "auto"
+    - name: "wlan0"
+      role: "wireless_honeypot"
+      ssid: "IoT_Network"
+      security: "wpa2"
+      password: "iotpassword"
+  
+  isolation:
+    method: "container"  # container pour environnement léger IoT
+    allow_outbound: false
+    rate_limit: "512kbps"
+    
+  redirection:
+    enabled: true
+    method: "nftables"
+    target_ports: [22, 23, 80, 443, 502, 1883, 8883, 8080, 554]
+
+ai_engine:
+  enabled: true
+  mode: "learning"
+  models_dir: "models/"
+  # Optimisé pour hardware limité
+  lightweight_models: true
+  
+  learning:
+    algorithm: "decision_tree"  # Plus léger que random_forest
+    features:
+      - "packet_size"
+      - "protocol"
+      - "destination_port"
+      - "payload_pattern"
+    training_interval: 86400  # 24 heures
+    min_samples: 500
+
+reporting:
+  alerts:
+    enabled: true
+    methods:
+      - type: "email"
+        recipients: ["iot-admin@example.com"]
+        severity_threshold: "high"
+      - type: "mqtt"
+        broker: "broker.example.com"
+        port: 1883
+        topic: "ghostnet/alerts"
+        severity_threshold: "medium"
+        
+  dashboard:
+    enabled: true
+    update_interval: 15  # Moins fréquent pour économiser les ressources
+    retention_period: 15  # Jours
+    
+  reports:
+    daily:
+      enabled: true
+      time: "02:00"
+      format: "pdf"
+    weekly:
+      enabled: true
+      day: "sunday"
+      time: "03:00"
+      format: "pdf"
+
+integrations:
+  siem:
+    enabled: false
+    
+  threat_intelligence:
+    enabled: true
+    sources:
+      - name: "alienvault"
+        api_key: "your_api_key"
+        refresh_interval: 86400
+      - name: "iot_threat_feeds"
+        url: "https://iotfeeds.example.com/api/v1/threats"
+        api_key: "your_api_key"
+        refresh_interval: 86400
+
+storage:
+  engine: "sqlite"  # Plus léger pour IoT
+  path: "data/ghostnet.db"
+  retention_period: 30  # Réduit pour économiser l'espace
+  backup:
+    enabled: true
+    interval: 86400
+    location: "data/backups/"
+    keep_last: 5
+
+# Configuration spécifique IoT
+iot_specific:
+  device_profiles:
+    - type: "camera"
+      brands: ["Hikvision", "Dahua", "Nest", "Ring"]
+      ports: [80, 443, 554]
+      vulnerabilities:
+        - "default_credentials"
+        - "firmware_outdated"
+        - "unauthenticated_rtsp"
+    
+    - type: "thermostat"
+      brands: ["Nest", "Ecobee", "Honeywell"]
+      ports: [80, 443, 1883]
+      vulnerabilities:
+        - "mqtt_unencrypted"
+        - "weak_api_auth"
+    
+    - type: "router"
+      brands: ["TP-Link", "Netgear", "D-Link", "Linksys"]
+      ports: [22, 23, 80, 443, 53]
+      vulnerabilities:
+        - "default_credentials"
+        - "upnp_exposed"
+        - "telnet_enabled"
+    
+    - type: "smartlock"
+      brands: ["August", "Yale", "Schlage"]
+      ports: [80, 443, 8080]
+      vulnerabilities:
+        - "weak_encryption"
+        - "replay_attack"
+  
+  protocols_monitored:
+    - "mqtt"
+    - "coap"
+    - "modbus"
+    - "zigbee"
+    - "z-wave"
+    - "ble"
