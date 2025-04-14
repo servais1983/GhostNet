@@ -6,7 +6,7 @@ Ce document présente l'architecture globale du système GhostNet, ses principau
 
 GhostNet est une plateforme de sécurité basée sur la déception qui utilise l'intelligence artificielle pour créer dynamiquement des leurres adaptés aux menaces détectées. L'architecture a été conçue pour être modulaire, évolutive et facilement adaptable à différents environnements.
 
-![Architecture GhostNet](assets/architecture_diagram.png)
+
 
 ## Composants principaux
 
