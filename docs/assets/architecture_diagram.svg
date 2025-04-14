@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  <style>
+    .module {
+      fill: #f0f0f0;
+      stroke: #333;
+      stroke-width: 2;
+    }
+    .ai-module {
+      fill: #e6f7ff;
+      stroke: #0099cc;
+      stroke-width: 2;
+    }
+    .detection-module {
+      fill: #fff2e6;
+      stroke: #ff9933;
+      stroke-width: 2;
+    }
+    .lure-module {
+      fill: #e6ffe6;
+      stroke: #33cc33;
+      stroke-width: 2;
+    }
+    .network-module {
+      fill: #ffe6f0;
+      stroke: #cc3366;
+      stroke-width: 2;
+    }
+    .api-module {
+      fill: #f0e6ff;
+      stroke: #9933cc;
+      stroke-width: 2;
+    }
+    .integration-module {
+      fill: #f2f2f2;
+      stroke: #666666;
+      stroke-width: 2;
+    }
+    .attacker {
+      fill: #ffcccc;
+      stroke: #cc0000;
+      stroke-width: 2;
+    }
+    .real-network {
+      fill: #ccffcc;
+      stroke: #00cc00;
+      stroke-width: 2;
+    }
+    .title {
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .module-title {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .subtitle {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .arrow {
+      stroke: #333;
+      stroke-width: 2;
+      fill: none;
+      marker-end: url(#arrowhead);
+    }
+    .dashed-arrow {
+      stroke: #666;
+      stroke-width: 2;
+      stroke-dasharray: 4;
+      fill: none;
+      marker-end: url(#arrowhead);
+    }
+  </style>
+
+  <!-- Title -->
+  <text x="400" y="40" class="title">GhostNet - Architecture</text>
+
+  <!-- External Actors -->
+  <rect x="50" y="150" width="100" height="60" rx="10" ry="10" class="attacker" />
+  <text x="100" y="175" class="module-title">Attaquant</text>
+  <text x="100" y="195" class="subtitle">Menace externe</text>
+
+  <rect x="50" y="350" width="100" height="60" rx="10" ry="10" class="real-network" />
+  <text x="100" y="375" class="module-title">Réseau réel</text>
+  <text x="100" y="395" class="subtitle">Infrastructure protégée</text>
+
+  <!-- Network Manager -->
+  <rect x="250" y="250" width="120" height="80" rx="5" ry="5" class="network-module" />
+  <text x="310" y="280" class="module-title">Gestionnaire</text>
+  <text x="310" y="300" class="subtitle">Réseau</text>
+
+  <!-- Detection Engine -->
+  <rect x="200" y="120" width="120" height="80" rx="5" ry="5" class="detection-module" />
+  <text x="260" y="150" class="module-title">Moteur de</text>
+  <text x="260" y="170" class="subtitle">Détection</text>
+
+  <!-- Lure Generator -->
+  <rect x="450" y="120" width="120" height="80" rx="5" ry="5" class="lure-module" />
+  <text x="510" y="150" class="module-title">Générateur de</text>
+  <text x="510" y="170" class="subtitle">Leurres</text>
+
+  <!-- AI Engine -->
+  <rect x="450" y="250" width="120" height="80" rx="5" ry="5" class="ai-module" />
+  <text x="510" y="280" class="module-title">Moteur</text>
+  <text x="510" y="300" class="subtitle">IA</text>
+
+  <!-- API REST -->
+  <rect x="330" y="400" width="120" height="80" rx="5" ry="5" class="api-module" />
+  <text x="390" y="430" class="module-title">API</text>
+  <text x="390" y="450" class="subtitle">REST</text>
+
+  <!-- Integration Module -->
+  <rect x="650" y="250" width="120" height="80" rx="5" ry="5" class="integration-module" />
+  <text x="710" y="280" class="module-title">Module</text>
+  <text x="710" y="300" class="subtitle">d'Intégration</text>
+  
+  <!-- External Systems -->
+  <rect x="650" y="400" width="120" height="80" rx="5" ry="5" />
+  <text x="710" y="430" class="module-title">Systèmes</text>
+  <text x="710" y="450" class="subtitle">Externes (SIEM, etc.)</text>
+
+  <!-- Arrows -->
+  <!-- Attacker to Detection -->
+  <path d="M150,180 H180 C190,180 195,160 200,160 H200" class="arrow" />
+  
+  <!-- Detection to Network Manager -->
+  <path d="M260,200 V230 C260,240 270,250 280,250 H280" class="arrow" />
+  
+  <!-- Network Manager to Lure Generator -->
+  <path d="M370,260 H410 C420,260 430,200 440,190 V160 H450" class="arrow" />
+  
+  <!-- Lure Generator to AI Engine -->
+  <path d="M510,200 V250" class="arrow" />
+  
+  <!-- AI Engine to Lure Generator -->
+  <path d="M490,250 V180" class="dashed-arrow" />
+  
+  <!-- Network Manager to Real Network -->
+  <path d="M250,280 H200 C180,280 160,320 160,350 V350" class="dashed-arrow" />
+  
+  <!-- Detection Engine to AI Engine -->
+  <path d="M320,150 H380 C400,150 430,220 450,250" class="dashed-arrow" />
+  
+  <!-- AI Engine to Integration Module -->
+  <path d="M570,290 H650" class="arrow" />
+  
+  <!-- Integration Module to External Systems -->
+  <path d="M710,330 V400" class="arrow" />
+  
+  <!-- API to Network Manager -->
+  <path d="M390,400 V360 C390,340 350,330 320,330 V330" class="arrow" />
+  
+  <!-- API to Lure Generator -->
+  <path d="M410,400 V370 C410,320 430,280 450,280" class="arrow" />
+
+  <!-- API to AI Engine -->
+  <path d="M450,400 V350 C450,340 460,330 480,330 H510" class="arrow" />
+  
+  <!-- API to Integration Module -->
+  <path d="M450,440 H550 C580,440 620,370 650,330 V330" class="arrow" />
+
+  <!-- Legend -->
+  <rect x="600" y="80" width="180" height="140" fill="white" stroke="#333" stroke-width="1" />
+  <text x="690" y="100" class="module-title">Légende</text>
+  
+  <rect x="620" y="120" width="20" height="12" class="detection-module" />
+  <text x="650" y="130" class="subtitle" text-anchor="start">Détection</text>
+  
+  <rect x="620" y="140" width="20" height="12" class="lure-module" />
+  <text x="650" y="150" class="subtitle" text-anchor="start">Leurres</text>
+  
+  <rect x="620" y="160" width="20" height="12" class="network-module" />
+  <text x="650" y="170" class="subtitle" text-anchor="start">Réseau</text>
+  
+  <rect x="620" y="180" width="20" height="12" class="ai-module" />
+  <text x="650" y="190" class="subtitle" text-anchor="start">IA</text>
+  
+  <rect x="620" y="200" width="20" height="12" class="api-module" />
+  <text x="650" y="210" class="subtitle" text-anchor="start">API</text>
+</svg>
