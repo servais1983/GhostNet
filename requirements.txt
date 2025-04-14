@@ -1,0 +1,70 @@
+# GhostNet - Requirements
+# Liste des dépendances nécessaires pour le fonctionnement du projet
+
+# Dépendances de base
+Flask>=2.0.0
+Flask-RESTful>=0.3.9
+Flask-Cors>=3.0.10
+PyYAML>=6.0
+requests>=2.27.1
+python-dotenv>=0.19.2
+
+# Dépendances pour la manipulation réseau
+scapy>=2.4.5
+pyroute2>=0.6.7
+netfilterqueue>=1.0.0
+psutil>=5.9.0
+
+# Dépendances pour l'IA et le machine learning
+numpy>=1.22.0
+pandas>=1.4.0
+scikit-learn>=1.0.2
+tensorflow>=2.8.0
+torch>=1.11.0
+
+# Dépendances pour la génération de leurres
+Jinja2>=3.0.3
+faker>=11.3.0
+
+# Dépendances pour la journalisation et le suivi
+rich>=12.0.0
+colorama>=0.4.4
+tqdm>=4.62.3
+
+# Dépendances pour la sécurité
+cryptography>=36.0.1
+pyOpenSSL>=22.0.0
+bcrypt>=3.2.0
+
+# Dépendances optionnelles pour SIEM
+# Décommentez selon vos besoins
+#elasticsearch>=8.0.0
+#splunk-sdk>=1.6.18
+
+# Dépendances optionnelles pour Docker
+# Décommentez si vous utilisez la virtualisation Docker
+#docker>=5.0.3
+
+# Dépendances de développement
+# Décommentez si vous souhaitez contribuer au code
+#pytest>=7.0.0
+#pytest-cov>=3.0.0
+#flake8>=4.0.1
+#black>=22.1.0
+#isort>=5.10.1
+#mypy>=0.931
+#sphinx>=4.4.0
+#sphinx-rtd-theme>=1.0.0
+
+# Dépendances pour la visualisation
+matplotlib>=3.5.1
+seaborn>=0.11.2
+plotly>=5.6.0
+
+# Dépendances pour le traitement du langage naturel
+nltk>=3.7
+gensim>=4.1.2
+
+# Dépendances pour l'analyse réseau avancée
+dpkt>=1.9.7
+pyshark>=0.4.5
