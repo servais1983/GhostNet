@@ -1,0 +1,219 @@
+# Configuration GhostNet pour Environnement d'Entreprise
+# Optimisé pour infrastructures complexes avec serveurs multiples et traffic élevé
+
+general:
+  name: "GhostNet Enterprise"
+  version: "1.0.0"
+  log_level: "INFO"
+  log_dir: "logs/"
+  api_port: 8443
+  api_host: "0.0.0.0"
+  enable_ssl: true
+  ssl_cert: "config/certs/server.crt"
+  ssl_key: "config/certs/server.key"
+
+detection:
+  enabled: true
+  modes:
+    - signature
+    - anomaly
+    - behavioral
+  sensitivity: 0.7
+  sampling_rate: 2
+  alert_threshold: 0.6
+  max_false_positives: 10
+  learning_period: 1209600  # 14 jours en secondes
+  
+  signature_rules:
+    - name: "Lateral Movement Detection"
+      pattern: "Connection from internal IP .* to critical server .*"
+      count: 3
+      timeframe: 300
+      severity: "critical"
+      action: "redirect_to_lure"
+      
+    - name: "Privilege Escalation"
+      pattern: "sudo: auth failure; logname=.* uid=\\d+ euid=\\d+ tty=.* ruser=.* rhost=.* user=root"
+      count: 3
+      timeframe: 300
+      severity: "critical"
+      action: "redirect_to_lure"
+      
+    - name: "Data Exfiltration Attempt"
+      pattern: "Large outbound transfer .* to external IP .*"
+      count: 1
+      timeframe: 60
+      severity: "critical"
+      action: "redirect_to_lure"
+
+lure_generator:
+  enabled: true
+  auto_update: true
+  update_interval: 43200  # 12 heures en secondes
+  mimicry_level: "high"
+  resource_limit: 0.6
+  
+  templates:
+    - name: "enterprise_web_server"
+      os: "centos"
+      version: "8"
+      services:
+        - name: "ssh"
+          port: 22
+          enabled: true
+        - name: "http"
+          port: 80
+          enabled: true
+          content_path: "templates/web/corporate"
+        - name: "https"
+          port: 443
+          enabled: true
+          content_path: "templates/web/corporate"
+          
+    - name: "enterprise_db_server"
+      os: "ubuntu"
+      version: "20.04"
+      services:
+        - name: "ssh"
+          port: 22
+          enabled: true
+        - name: "mysql"
+          port: 3306
+          enabled: true
+          credentials:
+            - username: "admin"
+              password: "admin123"
+            - username: "backup"
+              password: "backup2021"
+              
+    - name: "enterprise_mail_server"
+      os: "debian"
+      version: "11"
+      services:
+        - name: "ssh"
+          port: 22
+          enabled: true
+        - name: "smtp"
+          port: 25
+          enabled: true
+        - name: "imap"
+          port: 143
+          enabled: true
+        - name: "imaps"
+          port: 993
+          enabled: true
+
+network_manager:
+  interfaces:
+    - name: "eth0"
+      role: "management"
+      ip: "auto"
+    - name: "eth1"
+      role: "honeypot"
+      ip: "auto"
+      vlan: 100
+  
+  isolation:
+    method: "vm"  # VM pour meilleure isolation dans un environnement d'entreprise
+    allow_outbound: false
+    rate_limit: "10mbps"
+    
+  redirection:
+    enabled: true
+    method: "iptables"
+    target_ports: [22, 25, 80, 443, 3306, 3389, 445, 143, 993]
+
+ai_engine:
+  enabled: true
+  mode: "hybrid"
+  models_dir: "models/"
+  
+  learning:
+    algorithm: "random_forest"
+    features:
+      - "packet_size"
+      - "inter_arrival_time"
+      - "protocol"
+      - "flags"
+      - "flow_duration"
+      - "header_content"
+      - "payload_pattern"
+    training_interval: 43200  # 12 heures
+    min_samples: 5000
+
+reporting:
+  alerts:
+    enabled: true
+    methods:
+      - type: "email"
+        recipients: ["security@enterprise.com", "admin@enterprise.com"]
+        severity_threshold: "medium"
+      - type: "syslog"
+        server: "siem.enterprise.local"
+        port: 514
+        facility: "local0"
+        severity_threshold: "low"
+      - type: "webhook"
+        url: "https://security.enterprise.com/webhook"
+        severity_threshold: "medium"
+        
+  dashboard:
+    enabled: true
+    update_interval: 5
+    retention_period: 90
+    
+  reports:
+    daily:
+      enabled: true
+      time: "00:00"
+      format: "pdf"
+      recipients: ["security@enterprise.com"]
+    weekly:
+      enabled: true
+      day: "monday"
+      time: "06:00"
+      format: "pdf"
+      recipients: ["ciso@enterprise.com", "security@enterprise.com"]
+    monthly:
+      enabled: true
+      day: 1
+      time: "06:00"
+      format: "pdf"
+      recipients: ["ciso@enterprise.com", "cto@enterprise.com"]
+
+integrations:
+  siem:
+    enabled: true
+    type: "splunk"
+    host: "splunk.enterprise.local"
+    port: 8088
+    token: "your_splunk_token"
+    index: "ghostnet"
+    
+  threat_intelligence:
+    enabled: true
+    sources:
+      - name: "alienvault"
+        api_key: "your_api_key"
+        refresh_interval: 43200
+      - name: "virustotal"
+        api_key: "your_api_key"
+        refresh_interval: 43200
+      - name: "misp"
+        url: "https://misp.enterprise.local"
+        api_key: "your_api_key"
+        refresh_interval: 43200
+
+storage:
+  engine: "postgresql"
+  host: "db.enterprise.local"
+  port: 5432
+  database: "ghostnet"
+  username: "ghostnet_user"
+  password: "your_secure_password"
+  retention_period: 365  # 1 an
+  backup:
+    enabled: true
+    interval: 43200  # 12 heures
+    location: "/backup/ghostnet/"
+    keep_last: 30
