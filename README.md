@@ -7,7 +7,7 @@
 
 ## Résumé Exécutif
 
-GhostNet est une plateforme de défense cybersécurité nouvelle génération qui utilise l'IA générative et la virtualisation avancée pour créer des réseaux leurres adaptatifs. Notre système détourne les attaquants vers des environnements fictifs, analyse leurs techniques et renforce automatiquement vos défenses réelles.
+GhostNet est une plateforme de défense cybersécurité nouvelle génération qui utilise l'IA générative et la virtualisation avancée pour créer des réseaux leurres adaptatifs.Mon système détourne les attaquants vers des environnements fictifs, analyse leurs techniques et renforce automatiquement vos défenses réelles.
 
 ### Objectifs clés
 - Développer un réseau de leurre dynamique auto-adaptatif
@@ -76,7 +76,7 @@ python setup.py
 python ghostnet/server.py --config=config/example.yaml
 ```
 
-Pour plus de détails, consultez notre [Guide de Démarrage Rapide](docs/quickstart.md).
+Pour plus de détails, consultez mon [Guide de Démarrage Rapide](docs/quickstart.md).
 
 ## Licence
 
