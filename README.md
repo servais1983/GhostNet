@@ -1,6 +1,7 @@
 # Projet GhostNet
 
-![GhostNet Logo](docs/assets/ghostnet_logo.png)
+![fnNnbwTSGFyiXmC9PD6Ev](https://github.com/user-attachments/assets/f48faa12-403a-48da-b422-de9c92a0576f)
+
 
 > **"Leurrer l'ennemi, Apprendre de ses tactiques, Protéger le Réel."**
 
@@ -81,6 +82,4 @@ Pour plus de détails, consultez notre [Guide de Démarrage Rapide](docs/quickst
 
 Ce projet est sous licence [MIT](LICENSE).
 
-## Contact
 
-Pour toute question ou collaboration, contactez-nous à [contact@ghostnet-security.com](mailto:contact@ghostnet-security.com)
