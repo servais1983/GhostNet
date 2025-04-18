@@ -1,0 +1,1 @@
+from .lure_generator import LureGenerator

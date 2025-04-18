@@ -1,0 +1,7 @@
+{
+    "mode": "défaut",
+    "alert_threshold": 5,
+    "siem_endpoint": "http://localhost:8000/siem",
+    "ai_enabled": true,
+    "log_level": "INFO"
+}
