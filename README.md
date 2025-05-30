@@ -1,6 +1,6 @@
 # GhostNet 👻 
 
-![GhostNet Banner](https://github.com/user-attachments/assets/f48faa12-403a-48da-b422-de9c92a0576f)
+![GhostNet Banner](ghostnet.png)
 
 <div align="center">
   
